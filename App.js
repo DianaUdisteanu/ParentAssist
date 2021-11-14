@@ -1,15 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
+import 'react-native-gesture-handler';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View } from 'react-native';
 
 import AppLoading from "expo-app-loading";
+import AddIntoStack from './routes/routes';
+import * as Font from "expo-font";
 
-import * as firebase from "firebase";
-import "firebase/auth";
-import "firebase/database";
-import "firebase/firestore";
-import "firebase/functions";
-import "firebase/storage"
+import * as firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/database";
+import "firebase/compat/firestore";
+import "firebase/compat/functions";
+import "firebase/compat/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBvfkr3uTshApCveGyykcvrnNC7fUDWWn0",
@@ -21,12 +23,23 @@ const firebaseConfig = {
   measurementId: "G-TFP1PNP7WB"
 };
 
+const fontConfig = {
+  "light-font": require("./fonts/Roboto-Light.ttf"),
+  "normal-font": require("./fonts/Roboto-Regular.ttf"),
+  "bold-font": require("./fonts/Roboto-Bold.ttf")
+};
+
 export default class App extends React.Component {
   constructor(){
     super();
     this.state = {
-
+      fontsLoaded: false
     };
+  }
+
+  async loadFonts(){
+    await Font.loadAsync(fontConfig)
+    this.setState({fontsLoaded:true})
   }
 
   async componentDidMount(){
@@ -35,9 +48,16 @@ export default class App extends React.Component {
   }
 
   render(){
+    if(this.state.fontsLoaded){
+      return(
+        <AddIntoStack/>
+      );
+    }
+    else{
       return(
         <AppLoading/>
       );
+    }
   }
 }
 
