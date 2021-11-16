@@ -1,10 +1,9 @@
-import 'react-native-gesture-handler';
 import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import StyleSheet from 'react-native';
 
-import AppLoading from "expo-app-loading";
 import AddIntoStack from './routes/routes';
 import * as Font from "expo-font";
+import AppLoading from "expo-app-loading";
 
 import * as firebase from "firebase/compat/app";
 import "firebase/compat/auth";
@@ -43,6 +42,7 @@ export default class App extends React.Component {
   }
 
   async componentDidMount(){
+    this.loadFonts();
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
   }
