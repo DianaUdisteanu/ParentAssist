@@ -61,7 +61,7 @@ export default class App extends React.Component {
   }
 }
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.createElement({
   container: {
     flex: 2,
     backgroundColor: '#fff',
