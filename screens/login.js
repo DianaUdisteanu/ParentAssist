@@ -30,8 +30,7 @@ export default class Login extends React.Component{
                 >
                     <View style={{ flex:0.35 }}></View>
                     <View style={{ flex:0.45 , opacity:1, alignItems: "center"}}>
-                        <TextInput  test-id='testInputUsername' 
-                                    placeholder="Type your email" 
+                        <TextInput  placeholder="Type your email" 
                                     mode="outlined" 
                                     label="EMAIL"
                                     outlineColor="#96A793"
@@ -41,8 +40,7 @@ export default class Login extends React.Component{
                                     value={this.state.email}
                                     onChangeText={this.handleEmail}
                         />
-                        <TextInput  test-id='testInputPassword' 
-                                    placeholder="Type your password" 
+                        <TextInput  placeholder="Type your password" 
                                     mode="outlined" 
                                     label="PASSWORD"  
                                     secureTextEntry={true}
@@ -55,7 +53,7 @@ export default class Login extends React.Component{
                         />
                     </View>
                     <View style={{ flex:0.20, justifyContent:'center' }}>
-                        <Pressable test-id="press-button" style={{backgroundColor: '#2d3a56', alignItems:'center', width:"50%", marginHorizontal:"25%", height:47, justifyContent:'center', borderRadius:30}}
+                        <Pressable style={{backgroundColor: '#2d3a56', alignItems:'center', width:"50%", marginHorizontal:"25%", height:47, justifyContent:'center', borderRadius:30}}
                                 onPress={()=>this.props.navigation.navigate("Announcement")} > 
                             <Text  style={{color:'white', fontFamily:'bold-font', fontSize:17}}>LOGIN</Text>
                         </Pressable>
