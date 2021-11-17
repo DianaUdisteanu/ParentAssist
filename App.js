@@ -1,5 +1,4 @@
 import React from 'react';
-import StyleSheet from 'react-native';
 
 import AddIntoStack from './routes/routes';
 import * as Font from "expo-font";
@@ -60,12 +59,3 @@ export default class App extends React.Component {
     }
   }
 }
-
-const styles = StyleSheet.createElement({
-  container: {
-    flex: 2,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
