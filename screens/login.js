@@ -54,7 +54,7 @@ export default class Login extends React.Component{
                     </View>
                     <View style={{ flex:0.20, justifyContent:'center' }}>
                         <Pressable style={{backgroundColor: '#2d3a56', alignItems:'center', width:"50%", marginHorizontal:"25%", height:47, justifyContent:'center', borderRadius:30}}
-                                onPress={()=>this.props.navigation.navigate("Announcement")} > 
+                                onPress={()=>this.props.navigation.navigate("SecondScreen")} > 
                             <Text  style={{color:'white', fontFamily:'bold-font', fontSize:17}}>LOGIN</Text>
                         </Pressable>
                     </View>
