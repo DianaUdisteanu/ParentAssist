@@ -2,6 +2,7 @@ import React from 'react';
 import {View, TouchableOpacity, Image, Text, Pressable} from 'react-native';
 import { TextInput } from 'react-native-paper';
 
+
 export default class Announcement extends React.Component{
     constructor(){
         super();
@@ -24,7 +25,7 @@ export default class Announcement extends React.Component{
                 <View style={{flex: 0.15, alignItems: 'center', justifyContent: "center"}}>
                     <Image source={require("../app/images/logo_blue.png")} resizeMode='contain' style={{width: 100, height: 100}}/>
                 </View>
-                <View style={{flex: 0.45, justifyContent: "space-between", alignItems: "center"}}>
+                <View style={{flex: 0.50, justifyContent: "space-between", alignItems: "center"}}>
                         <TextInput  placeholder="Insert title" 
                                     mode="outlined" 
                                     label="*TITLE"
@@ -60,8 +61,6 @@ export default class Announcement extends React.Component{
                                 onPress={()=> console.log("post")} > 
                             <Text  style={{color:'white', fontFamily:'bold-font', fontSize:21, fontWeight:'bold'}}>POST</Text>
                         </Pressable>
-                </View>
-                <View style={{flex: 0.10}}>
                 </View>
             </View>
         );
