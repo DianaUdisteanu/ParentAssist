@@ -8,7 +8,7 @@ export default class StudentCard extends React.Component{
     };
     render(){
         return(
-            <View style={{flexDirection: 'row', alignItems:'center', justifyContent:'space-around', backgroundColor: '#96A793', width:"85%", height:55, borderRadius:30, marginHorizontal: 35}}> 
+            <View style={{flexDirection: 'row', alignItems:'center', justifyContent:'space-around', backgroundColor: '#96A793', width:"85%", height:55, borderRadius:30, marginHorizontal: 35, marginVertical: 5}}> 
                 <Image source={require("../app/images/student_card_icon_white.png")} style={{width: 25, height: 25, marginLeft:"-8%"}} resizeMode='contain'/>
                 <View style={{flexDirection: 'column', marginLeft:"-25%"}}>
                     <Text  style={{color:'white', fontFamily:'bold-font', fontSize:15}}>NAME</Text>
