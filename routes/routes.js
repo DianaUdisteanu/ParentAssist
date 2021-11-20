@@ -7,6 +7,8 @@ import Login from '../screens/login';
 import Announcement from '../screens/announcement';
 import Students from '../screens/students';
 import CreateParentAccount from '../screens/create_account';
+import EditProfile from '../screens/edit_profile';
+import ChangePassword from '../screens/change_password';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -52,6 +54,20 @@ function AddIntoStack(){
                 />
                 <Stack.Screen name="SecondScreen"
                               component={viewScreens}
+                              options={({navigation}) => ({
+                                headerShown: false,
+                                gestureEnabled: false
+                            })}
+                />
+                <Stack.Screen name="EditProfile"
+                              component={EditProfile}
+                              options={({navigation}) => ({
+                                headerShown: false,
+                                gestureEnabled: false
+                            })}
+                />
+                <Stack.Screen name="ChangePassword"
+                              component={ChangePassword}
                               options={({navigation}) => ({
                                 headerShown: false,
                                 gestureEnabled: false
