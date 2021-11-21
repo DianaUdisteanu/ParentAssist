@@ -18,7 +18,7 @@ export default class Announcement extends React.Component{
                             <Image source={require("../app/images/logout_blue.png")} style={{width: 30, height: 30}} resizeMode='contain'/>
                     </TouchableOpacity>
                     < Text style={{color: "#2d3a56", fontSize:19, fontFamily:'bold-font', fontWeight:'bold', marginTop: "13%"}}>ANNOUNCEMENT</Text>
-                    <TouchableOpacity style={{width: 30, height: 30, marginTop:"12%", marginRight: "3%", marginTop:"12%"}}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("EditProfile")} style={{width: 30, height: 30, marginTop:"12%", marginRight: "3%", marginTop:"12%"}}>
                             <Image source={require("../app/images/settings_icon_blue.png")} style={{width: 30, height: 30}} resizeMode='contain'/>
                     </TouchableOpacity>
                 </View>
