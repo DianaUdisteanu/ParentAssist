@@ -9,6 +9,9 @@ import Students from '../screens/students';
 import CreateParentAccount from '../screens/create_account';
 import EditProfile from '../screens/edit_profile';
 import ChangePassword from '../screens/change_password';
+import ParentReply from '../screens/parent_reply';
+import Posts from '../screens/posts';
+import Grades from '../screens/grades';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -40,6 +43,36 @@ function viewScreens(){
         </Tab.Navigator>
     );
 }
+
+
+function viewParentScreens(){
+    return(
+        <Tab.Navigator barStyle={{backgroundColor: "#2d3a56", borderRadius: 20, overflow: 'hidden', marginBottom: 30, height: 50, marginHorizontal: 15, alignContent:'center'}}>
+            <Tab.Screen name="ParentReply"
+                        component={ParentReply}
+                        options={({navigation}) => ({
+                            tabBarIcon: ({focused}) => {return <Image source={focused ? require("../app/images/announcement_green.png") : require("../app/images/announcement_white.png")} style={{width: 30, height: 30}} resizeMode='contain'/>},
+                            tabBarLabel: <Text></Text>
+                        })}
+            />
+            <Tab.Screen name="Posts"
+                        component={Posts}
+                        options={({navigation}) => ({
+                            tabBarIcon: ({focused}) => {return <Image source={focused ? require("../app/images/teacher_posts_green.png") : require("../app/images/teacher_posts_white.png") } style={{width: 30, height: 30}} resizeMode='contain'/>},
+                            tabBarLabel: <Text></Text>
+                        })}
+            />
+            <Tab.Screen name="Grades"
+                        component={Grades}
+                        options={({navigation}) => ({
+                            tabBarIcon: ({focused}) => {return <Image source={focused ? require("../app/images/grades_green.png") : require("../app/images/grades_white.png")} style={{width: 30, height: 30}} resizeMode='contain'/>},
+                            tabBarLabel: <Text></Text>
+                        })}
+            />
+        </Tab.Navigator>
+    );
+}
+
 
 function AddIntoStack(){
     return(
@@ -73,6 +106,35 @@ function AddIntoStack(){
                                 gestureEnabled: false
                             })}
                 />
+                <Stack.Screen name="ThirdScreen"
+                              component={viewParentScreens}
+                              options={({navigation}) => ({
+                                headerShown: false,
+                                gestureEnabled: false
+                            })}
+                />
+{/* 
+                <Stack.Screen name="ParentReply"
+                              component={ParentReply}
+                              options={({navigation}) => ({
+                                headerShown: false,
+                                gestureEnabled: false
+                            })}
+                />
+                <Stack.Screen name="Posts"
+                              component={Posts}
+                              options={({navigation}) => ({
+                                headerShown: false,
+                                gestureEnabled: false
+                            })}
+                />
+                <Stack.Screen name="Grades"
+                              component={Grades}
+                              options={({navigation}) => ({
+                                headerShown: false,
+                                gestureEnabled: false
+                            })}
+                /> */}
             </Stack.Navigator>
         </NavigationContainer>
     );
