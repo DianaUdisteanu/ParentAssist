@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, ImageBackground, Text, Pressable, Dimensions} from 'react-native';
 import { TextInput } from 'react-native-paper';
+import { ref, onValue, getDatabase } from "firebase/database";
 
 
 export default class Login extends React.Component{
@@ -10,6 +11,16 @@ export default class Login extends React.Component{
             email: "",
             password: ""
         };
+    }
+
+    componentDidMount(){
+        const db = getDatabase()
+
+        const usersRef = ref(db, 'users/');
+            onValue(usersRef, (snapshot) => {
+                const data = snapshot.val();
+                console.log(data);
+            });
     }
 
     handleEmail = (text) => {this.setState({email: text})};
