@@ -8,15 +8,19 @@ export default class StudentCard extends React.Component{
     };
     render(){
         return(
-            <View style={{flexDirection: 'row', alignItems:'center', justifyContent:'space-around', backgroundColor: '#96A793', width:"85%", height:55, borderRadius:30, marginHorizontal: 35, marginVertical: 10}}> 
-                <Image source={require("../app/images/student_card_icon_white.png")} style={{width: 25, height: 25, marginLeft:"-8%"}} resizeMode='contain'/>
-                <View style={{flexDirection: 'column', marginLeft:"-25%"}}>
+            <View style={{flexDirection: 'row', alignItems:'center', justifyContent:'space-around', backgroundColor: '#96A793', width:"85%", height:55, borderRadius:30, marginHorizontal: 35, marginVertical: 10}}>
+                <View style={{}}>
+                    <Image source={require("../app/images/student_card_icon_white.png")} style={{width: 25, height: 25}} resizeMode='contain'/>
+                </View> 
+                <View style={{flexDirection: 'column', flex:0.8, textAlign: 'left', width:"100%"}}>
                     <Text  style={{color:'white', fontFamily:'bold-font', fontSize:15}}>NAME</Text>
                     <Text  style={{color:'white', fontFamily:'bold-font', fontSize:16}}>{this.props.name}</Text>
                 </View>
-                <Pressable onPress={()=> console.log("post")} style={{marginRight:"-10%"}}>
-                    <Image source={require("../app/images/arrow_right_white.png")} style={{width: 18, height: 18}} resizeMode='contain'/>
-                </Pressable>                    
+                <View>
+                    <Pressable onPress={()=>this.props.navigation.navigate("ParentDetails", {screenTitle: this.props.name, id: this.props.id})}>
+                        <Image source={require("../app/images/arrow_right_white.png")} style={{width: 18, height: 18}} resizeMode='contain'/>
+                    </Pressable> 
+                </View>                   
             </View>
         );
     }
