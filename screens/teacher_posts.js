@@ -30,12 +30,10 @@ const DataPosts = [
 ]
 
 
-export default class Posts extends React.Component{
+export default class TeacherPosts extends React.Component{
     constructor(){
         super();
-        this.state = {
-            userType: "parent"
-        };
+        this.state = {};
     }
 
     render(){
@@ -46,7 +44,7 @@ export default class Posts extends React.Component{
                         <Image source={require("../app/images/logout_blue.png")} style={{width: 30, height: 30}} resizeMode='contain'/>
                 </TouchableOpacity>
                 < Text style={{color: "#2d3a56", fontSize:19, fontFamily:'bold-font', fontWeight:'bold', marginTop: "13%"}}>
-                        {this.state.userType == 'parent' ? "TEACHER POSTS" : this.state.userType == 'teacher' ? "PARENTS POSTS" : null}
+                        TEACHER POSTS
                 </Text>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate("EditProfile")} style={{width: 30, height: 30, marginTop:"12%", marginRight: "3%", marginTop:"12%"}}>
                         <Image source={require("../app/images/settings_icon_blue.png")} style={{width: 30, height: 30}} resizeMode='contain'/>

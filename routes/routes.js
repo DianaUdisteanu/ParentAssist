@@ -10,8 +10,10 @@ import CreateParentAccount from '../screens/create_account';
 import EditProfile from '../screens/edit_profile';
 import ChangePassword from '../screens/change_password';
 import ParentReply from '../screens/parent_reply';
-import Posts from '../screens/posts';
+import TeacherPosts from '../screens/teacher_posts';
 import Grades from '../screens/grades';
+import ParentDetails from '../screens/parent_details';
+import ParentPosts from '../screens/parent_posts';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -55,8 +57,8 @@ function viewParentScreens(){
                             tabBarLabel: <Text></Text>
                         })}
             />
-            <Tab.Screen name="Posts"
-                        component={Posts}
+            <Tab.Screen name="TeacherPosts"
+                        component={TeacherPosts}
                         options={({navigation}) => ({
                             tabBarIcon: ({focused}) => {return <Image source={focused ? require("../app/images/teacher_posts_green.png") : require("../app/images/teacher_posts_white.png") } style={{width: 30, height: 30}} resizeMode='contain'/>},
                             tabBarLabel: <Text></Text>
@@ -113,28 +115,20 @@ function AddIntoStack(){
                                 gestureEnabled: false
                             })}
                 />
-{/* 
-                <Stack.Screen name="ParentReply"
-                              component={ParentReply}
+                <Stack.Screen name="ParentDetails"
+                              component={ParentDetails}
                               options={({navigation}) => ({
                                 headerShown: false,
                                 gestureEnabled: false
                             })}
                 />
-                <Stack.Screen name="Posts"
-                              component={Posts}
+                <Stack.Screen name="ParentPosts"
+                              component={ParentPosts}
                               options={({navigation}) => ({
                                 headerShown: false,
                                 gestureEnabled: false
                             })}
                 />
-                <Stack.Screen name="Grades"
-                              component={Grades}
-                              options={({navigation}) => ({
-                                headerShown: false,
-                                gestureEnabled: false
-                            })}
-                /> */}
             </Stack.Navigator>
         </NavigationContainer>
     );
