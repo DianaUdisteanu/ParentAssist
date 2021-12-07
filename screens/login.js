@@ -1,8 +1,13 @@
 import React from 'react';
-import {View, ImageBackground, Text, Pressable, Dimensions} from 'react-native';
+import { View, ImageBackground, Text, Pressable, Dimensions, LogBox} from 'react-native';
+import { Alert } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { ref, onValue, getDatabase } from "firebase/database";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+LogBox.ignoreAllLogs();
+LogBox.ignoreLogs(['Warning: ...']);
 
 export default class Login extends React.Component{
     constructor(){
@@ -15,13 +20,61 @@ export default class Login extends React.Component{
 
     componentDidMount(){
         const db = getDatabase()
-
-        const usersRef = ref(db, 'users/');
-            onValue(usersRef, (snapshot) => {
-                const data = snapshot.val();
-                console.log(data);
-            });
     }
+
+
+    storeData = async() => {
+        try{
+            await AsyncStorage.setItem("email",this.state.email)
+        }catch(e){ }
+    }
+
+    LoginPress = () => {
+        const auth = getAuth();
+        signInWithEmailAndPassword(auth,this.state.email,this.state.password)
+        .then(() => {
+            const db = getDatabase();
+            const dbRef = ref(db, '/users');
+            onValue(dbRef, (snapshot) => {
+                snapshot.forEach((childSnapshot) => {
+                if(childSnapshot.key === this.state.email.split("@")[0].replace('.','').replace('_','')) {
+                        if(childSnapshot.val().Role === "Teacher"){
+                            this.props.navigation.navigate("SecondScreen");
+                        }else {
+                            this.props.navigation.navigate("ThirdScreen");
+                        }
+                }
+                });
+            });
+        })
+        .catch(error => {
+            switch(error.code) {
+                case 'auth/user-not-found':
+                  Alert.alert("Error",
+                  "User not found!",
+                  [
+                      {
+                          text:'Ok',
+                          onPress: () => this.props.navigation.navigate("Login")
+                      }
+                  ])
+                      break;
+
+                  case 'auth/wrong-password':
+                  Alert.alert("Error",
+                  "Invalid credentials!",
+                  [
+                      {
+                          text:'Ok',
+                          onPress: () => this.props.navigation.navigate("Login")
+                      }
+                  ])
+                      break;
+             }}
+            );
+        this.storeData();
+    }
+
 
     handleEmail = (text) => {this.setState({email: text})};
     handlePassword = (text) => {this.setState({password: text})};
@@ -65,12 +118,8 @@ export default class Login extends React.Component{
                     </View>
                     <View style={{ flex:0.20, justifyContent:'center' }}>
                         <Pressable style={{backgroundColor: '#2d3a56', alignItems:'center', width:"50%", marginHorizontal:"25%", height:47, justifyContent:'center', borderRadius:30}}
-                                onPress={()=>this.props.navigation.navigate("SecondScreen")} > 
+                                onPress={this.LoginPress} > 
                             <Text  style={{color:'white', fontFamily:'bold-font', fontSize:17}}>LOGIN</Text>
-                        </Pressable>
-                        <Pressable style={{backgroundColor: '#2d3a56', alignItems:'center', width:"50%", marginHorizontal:"25%", height:47, justifyContent:'center', borderRadius:30}}
-                                onPress={()=>this.props.navigation.navigate("ThirdScreen")} > 
-                            <Text  style={{color:'white', fontFamily:'bold-font', fontSize:17}}>PARENT</Text>
                         </Pressable>
                     </View>
                 </ImageBackground>
