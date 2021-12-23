@@ -38,11 +38,16 @@ export default class Login extends React.Component{
             onValue(dbRef, (snapshot) => {
                 snapshot.forEach((childSnapshot) => {
                 if(childSnapshot.key === this.state.email.split("@")[0].replace('.','').replace('_','')) {
+                    if(this.state.password.length < 20){
                         if(childSnapshot.val().Role === "Teacher"){
                             this.props.navigation.navigate("SecondScreen");
-                        }else {
+                        }else{
                             this.props.navigation.navigate("ThirdScreen");
                         }
+                    }
+                    else{
+                        this.props.navigation.navigate("SetupPassword");
+                    }
                 }
                 });
             });

@@ -8,11 +8,12 @@ import email from 'react-native-email'
 export default class CreateParentAccount extends React.Component{
     constructor(){
         super();
+        this.pass = "";
         this.state = {
             name: "",
             email: "",
             phoneNumber: "",
-            sIdNumber: ""
+            sIdNumber: "",
         };
     }
 
@@ -21,9 +22,9 @@ export default class CreateParentAccount extends React.Component{
     handlePhoneNumber = (text) => {this.setState({phoneNumber: text})};
     handleSIdNumber = (text) => {this.setState({sIdNumber: text})};
 
-    handleMail = (mail, subjectMail, bodyMail) => {
-        const to = mail;
+    handleSendEmail= (to, subjectMail, bodyMail) => {
         email(to, {
+            // Optional additional arguments
             subject: subjectMail,
             body: bodyMail
         }).catch(console.error)
@@ -34,20 +35,18 @@ export default class CreateParentAccount extends React.Component{
         var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         var charactersLength = characters.length;
         for ( var i = 0; i < length; i++ ) {
-          result += characters.charAt(Math.floor(Math.random() * 
-     charactersLength));
-       }
-       return result;
+          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
     }
 
     CreateAccount = () => {
         const auth = getAuth();
-        const pass = this.makeid(20);
-        console.log(pass);
-        createUserWithEmailAndPassword(auth, this.state.email, pass)
+        this.pass = this.makeid(20);
+        console.log(this.pass);
+        createUserWithEmailAndPassword(auth, this.state.email, this.pass)
         .then(() => {
             this.createIndividualTable();
-            this.handleMail(this.state.email, 'Your account for ParentAssist app was created!', 'Dear, ' + this.state.name + '\nand' + 'Here are the credentials for logging in into our wonderful app:\nand' + 'Email: ' + this.state.email + '\nand' + 'Password: ' + pass + '\nand' + 'Do not forget to change your password after logging in.');
             Alert.alert("Info",
                                     "User created successfully!",
                                     [
@@ -145,7 +144,7 @@ export default class CreateParentAccount extends React.Component{
                 </View>
                 <View style={{flex:0.20, alignItems:'center', marginTop:"5%"}}>
                         <Pressable style={{backgroundColor: '#96A793', alignItems:'center', width:"55%", marginHorizontal:"25%", height:47, justifyContent:'center', borderRadius:30, marginTop: "2%"}}
-                                onPress={this.CreateAccount} > 
+                                onPress={() => {this.CreateAccount(); this.handleSendEmail(this.state.email, 'Your account for ParentAssist app was created!', 'Dear, ' + this.state.name + '\n' + 'Here are the credentials for logging into our app:\n' + 'Email: ' + this.state.email + '\n' + 'Password: ' + this.pass + '\n' + 'Do not forget to change your password after logging in.')}} > 
                             <Text  style={{color:'white', fontFamily:'bold-font', fontSize:16}}>SUBMIT ACCOUNT</Text>
                         </Pressable>
                 </View>
