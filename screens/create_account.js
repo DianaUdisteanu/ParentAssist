@@ -1,12 +1,87 @@
 import React from 'react';
-import {View, TouchableOpacity, Image, Text, Pressable} from 'react-native';
+import {View, TouchableOpacity, Image, Text, Pressable, Alert} from 'react-native';
 import { TextInput } from 'react-native-paper';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getDatabase, ref, set } from "firebase/database";
+import email from 'react-native-email'
 
 export default class CreateParentAccount extends React.Component{
     constructor(){
         super();
+        this.pass = "";
         this.state = {
+            name: "",
+            email: "",
+            phoneNumber: "",
+            sIdNumber: "",
         };
+    }
+
+    handleName = (text) => {this.setState({name: text})};
+    handleEmail = (text) => {this.setState({email: text})};
+    handlePhoneNumber = (text) => {this.setState({phoneNumber: text})};
+    handleSIdNumber = (text) => {this.setState({sIdNumber: text})};
+
+    handleSendEmail= (to, subjectMail, bodyMail) => {
+        email(to, {
+            // Optional additional arguments
+            subject: subjectMail,
+            body: bodyMail
+        }).catch(console.error)
+    }
+
+    makeid = (length) => {
+        var result           = '';
+        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
+    }
+
+    CreateAccount = () => {
+        const auth = getAuth();
+        this.pass = this.makeid(20);
+        console.log(this.pass);
+        createUserWithEmailAndPassword(auth, this.state.email, this.pass)
+        .then(() => {
+            this.createIndividualTable();
+            Alert.alert("Info",
+                                    "User created successfully!",
+                                    [
+                                        {
+                                            text:'Ok',
+                                            onPress: () => this.props.navigation.navigate("SecondScreen")
+                                        }
+                                    ]);
+            this.setState({name: ''});
+            this.setState({email: ''});
+            this.setState({phoneNumber: ''});
+            this.setState({sIdNumber: ''});
+        })
+        .catch(error => Alert.alert("Error",
+                                    error.message,
+                                    [
+                                        {
+                                            text:'Ok',
+                                            onPress: () => this.props.navigation.navigate("SecondScreen")
+                                        }
+                                    ]))
+    }
+
+    createIndividualTable = () => {
+        const username = this.state.email.split("@")[0].replace('.','').replace('_','');
+        const childPath = "/" + username;
+        const db = getDatabase();
+        set(ref(db, '/users' + childPath), {
+            IDnumber: this.state.sIdNumber,
+            Name: this.state.name,
+            Phone: this.state.phoneNumber,
+            Role: "Parent"
+        }).catch(function (error) {
+            console.log("Error:" + error.message);
+        });
     }
 
     render(){
@@ -33,6 +108,8 @@ export default class CreateParentAccount extends React.Component{
                                     activeOutlineColor="#96A793"
                                     theme={{ roundness: 20, colors: { text: "#2d3a56", placeholder:'#2d3a56' } }}
                                     style={{fontSize:12, fontFamily:'bold-font', fontWeight:'bold', width:'55%', height:40, marginTop:"2%"}}
+                                    value={this.state.name}
+                                    onChangeText={this.handleName}
                         />
                         <TextInput  placeholder="Insert email" 
                                     mode="outlined" 
@@ -41,6 +118,8 @@ export default class CreateParentAccount extends React.Component{
                                     activeOutlineColor="#96A793"
                                     theme={{ roundness: 20, colors: { text: "#2d3a56", placeholder:'#2d3a56' } }}
                                     style={{fontSize:12, fontFamily:'bold-font', fontWeight:'bold', width:'55%', height:40, marginTop:"2%"}}
+                                    value={this.state.email}
+                                    onChangeText={this.handleEmail}
                         />
                         <TextInput  placeholder="Insert phone number" 
                                     mode="outlined" 
@@ -49,6 +128,8 @@ export default class CreateParentAccount extends React.Component{
                                     activeOutlineColor="#96A793"
                                     theme={{ roundness: 20, colors: { text: "#2d3a56", placeholder:'#2d3a56' } }}
                                     style={{fontSize:12, fontFamily:'bold-font', fontWeight:'bold', width:'55%', height:40, marginTop:"2%"}}
+                                    value={this.state.phoneNumber}
+                                    onChangeText={this.handlePhoneNumber}
                         />
                         <TextInput  placeholder="Insert student id number" 
                                     mode="outlined" 
@@ -57,11 +138,13 @@ export default class CreateParentAccount extends React.Component{
                                     activeOutlineColor="#96A793"
                                     theme={{ roundness: 20, colors: { text: "#2d3a56", placeholder:'#2d3a56' } }}
                                     style={{fontSize:12, fontFamily:'bold-font', fontWeight:'bold', width:'55%', height:40, marginTop:"2%"}}
+                                    value={this.state.sIdNumber}
+                                    onChangeText={this.handleSIdNumber}
                         />
                 </View>
                 <View style={{flex:0.20, alignItems:'center', marginTop:"5%"}}>
                         <Pressable style={{backgroundColor: '#96A793', alignItems:'center', width:"55%", marginHorizontal:"25%", height:47, justifyContent:'center', borderRadius:30, marginTop: "2%"}}
-                                onPress={()=> console.log("upload")} > 
+                                onPress={() => {this.CreateAccount(); this.handleSendEmail(this.state.email, 'Your account for ParentAssist app was created!', 'Dear, ' + this.state.name + '\n' + 'Here are the credentials for logging into our app:\n' + 'Email: ' + this.state.email + '\n' + 'Password: ' + this.pass + '\n' + 'Do not forget to change your password after logging in.')}} > 
                             <Text  style={{color:'white', fontFamily:'bold-font', fontSize:16}}>SUBMIT ACCOUNT</Text>
                         </Pressable>
                 </View>

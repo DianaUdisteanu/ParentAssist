@@ -14,6 +14,7 @@ import TeacherPosts from '../screens/teacher_posts';
 import Grades from '../screens/grades';
 import ParentDetails from '../screens/parent_details';
 import ParentPosts from '../screens/parent_posts';
+import SetupPassword from '../screens/setup_password';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -124,6 +125,13 @@ function AddIntoStack(){
                 />
                 <Stack.Screen name="ParentPosts"
                               component={ParentPosts}
+                              options={({navigation}) => ({
+                                headerShown: false,
+                                gestureEnabled: false
+                            })}
+                />
+                <Stack.Screen name="SetupPassword"
+                              component={SetupPassword}
                               options={({navigation}) => ({
                                 headerShown: false,
                                 gestureEnabled: false
