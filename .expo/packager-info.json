@@ -4,7 +4,7 @@
   "packagerPort": 19000,
   "webpackServerPort": null,
   "packagerPid": null,
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "expoServerNgrokUrl": "https://st-2ez.anonymous.parentassist.exp.direct",
+  "packagerNgrokUrl": "https://packager.st-2ez.anonymous.parentassist.exp.direct",
+  "ngrokPid": 26988
 }

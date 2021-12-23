@@ -2,117 +2,54 @@ import React from 'react';
 import {View, TouchableOpacity, Text, Image, SafeAreaView} from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import StudentCard from '../components/student-card';
+import { getDatabase, ref, onValue} from "firebase/database";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const dummyDataStudents = [
-    {
-        key:1,
-        name:"Sofran Sebastian",
-        idNumber:"TM123456"
-    },
-    {
-        key:2,
-        name:"Udisteanu Diana",
-        idNumber:"TM123456"
-    },
-    {
-        key:3,
-        name:"Avram Denis",
-        idNumber:"TM123456"
-    },
-    {
-        key:4,
-        name:"Sofran Sebastian",
-        idNumber:"TM123456"
-    },
-    {
-        key:5,
-        name:"Sofran Sebastian",
-        idNumber:"TM123456"
-    },
-    {
-        key:6,
-        name:"Sofran Sebastian",
-        idNumber:"TM123456"
-    },
-    {
-        key:7,
-        name:"Sofran Sebastian",
-        idNumber:"TM123456"
-    },
-    {
-        key:8,
-        name:"Sofran Sebastian",
-        idNumber:"TM123456"
-    },
-    {
-        key:9,
-        name:"Sofran Sebastian",
-        idNumber:"TM123456"
-    },
-    {
-        key:10,
-        name:"Sofran Sebastian",
-        idNumber:"TM123456"
-    },
-    {
-        key:11,
-        name:"Sofran Sebastian",
-        idNumber:"TM123456"
-    },
-    {
-        key:12,
-        name:"Sofran Sebastian",
-        idNumber:"TM123456"
-    },
-    {
-        key:13,
-        name:"Sofran Sebastian",
-        idNumber:"TM123456"
-    },
-    {
-        key:14,
-        name:"Sofran Sebastian",
-        idNumber:"TM123456"
-    },
-    {
-        key:15,
-        name:"Sofran Sebastian",
-        idNumber:"TM123456"
-    },
-    {
-        key:16,
-        name:"Sofran Sebastian",
-        idNumber:"TM123456"
-    },
-    {
-        key:17,
-        name:"Sofran Sebastian",
-        idNumber:"TM123456"
-    },
-    {
-        key:18,
-        name:"Sofran Sebastian",
-        idNumber:"TM123456"
-    },
-    {
-        key:19,
-        name:"Sofran Sebastian",
-        idNumber:"TM123456"
-    },
-    {
-        key:20,
-        name:"Sofran Sebastian",
-        idNumber:"TM123456"
-    },
-]
-
+const dummyDataStudents = []
 
 export default class Students extends React.Component{
     constructor(){
         super();
         this.state = {
+            personalEmail : "",
+            
         };
     }
+
+    componentDidMount() {
+        this.handleGetEmail();
+        this.handleGetStudents();
+        console.log(dummyDataStudents);
+    }
+
+    handleGetEmail = async() =>{
+        try{
+            const value = await AsyncStorage.getItem("email");
+            if(value !== null) {
+                this.setState({personalEmail : value});
+            }
+        }catch(e){}
+    }
+
+    handleGetStudents = () =>{
+        let count = 0;
+        const db = getDatabase();
+        const starCountRef = ref(db, '/users/' + this.state.personalEmail + '/Students');
+        onValue(starCountRef, (snapshot) => {
+            const data = snapshot.val();
+            snapshot.forEach( (childSnapshot) => {
+                const absPath = "/students/" + childSnapshot.key + "/name";
+                const studentPath = ref(db, absPath);
+                onValue(studentPath, (snapshot) => {
+                    const dataStudent = snapshot.val();
+                    count = count + 1;
+                    dummyDataStudents.push({key:count,name:dataStudent, idNumber: childSnapshot.key});
+                  });
+            });
+        });
+        console.log(dummyDataStudents);
+    }
+
 
     render(){
         return(
@@ -128,7 +65,7 @@ export default class Students extends React.Component{
                 </View>
                 <View style={{ flex: 0.9, marginTop:"10%" }}>
                     <SafeAreaView style={{}}>
-                        <FlatList   data={ dummyDataStudents }
+                        <FlatList   data={this.state.dummyDataStudents }
                                     renderItem={ ({item}) => {return <StudentCard name={item.name} navigation={this.props.navigation} id={item.idNumber}/>}}
                                     keyExtractor={ (student) => student.key }
                         />

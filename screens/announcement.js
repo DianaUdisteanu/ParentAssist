@@ -1,13 +1,57 @@
 import React from 'react';
 import {View, TouchableOpacity, Image, Text, Pressable} from 'react-native';
 import { TextInput } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default class Announcement extends React.Component{
     constructor(){
         super();
         this.state = {
+            email: "",
+            dummyDataStudents : []
         };
+    }
+
+    componentDidMount() {
+        this.handleGetEmail();
+        this.storeData();
+    }
+
+
+    handleGetEmail = async() =>{
+        try{
+            const value = await AsyncStorage.getItem("email");
+            if(value !== null) {
+                this.setState({email : value});
+            }
+        }catch(e){}
+    }
+
+    handleGetStudents = () =>{
+        let count = 0;
+        const db = getDatabase();
+        const starCountRef = ref(db, '/users/' + this.state.personalEmail + '/Students');
+        onValue(starCountRef, (snapshot) => {
+            const data = snapshot.val();
+            snapshot.forEach( (childSnapshot) => {
+                const absPath = "/students/" + childSnapshot.key + "/name";
+                const studentPath = ref(db, absPath);
+                onValue(studentPath, (snapshot) => {
+                    const dataStudent = snapshot.val();
+                    count = count + 1;
+                    var joined =this.state.dummyDataStudents.concat({key:count,name:dataStudent, idNumber: childSnapshot.key});
+                    this.setState({dummyDataStudents : joined});
+                  });
+            });
+        });
+        this.storeData();
+    }
+
+    storeData = async() => {
+        try{
+            await AsyncStorage.setItem("students",this.state.dummyDataStudents)
+        }catch(e){ }
     }
 
     render(){
