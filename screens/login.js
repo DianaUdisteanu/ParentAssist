@@ -20,7 +20,6 @@ export default class Login extends React.Component{
 
     componentDidMount(){
         const db = getDatabase();
-        this.storeData();
     }
 
 

@@ -5,21 +5,18 @@ import StudentCard from '../components/student-card';
 import { getDatabase, ref, onValue} from "firebase/database";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const dummyDataStudents = []
-
 export default class Students extends React.Component{
     constructor(){
         super();
         this.state = {
             personalEmail : "",
-            
+            dummyDataStudents: []
         };
     }
 
-    componentDidMount() {
-        this.handleGetEmail();
-        this.handleGetStudents();
-        console.log(dummyDataStudents);
+    async componentDidMount() {
+        await this.handleGetEmail();
+        await this.handleGetStudents();
     }
 
     handleGetEmail = async() =>{
@@ -31,23 +28,24 @@ export default class Students extends React.Component{
         }catch(e){}
     }
 
-    handleGetStudents = () =>{
+    handleGetStudents = async() =>{
         let count = 0;
         const db = getDatabase();
         const starCountRef = ref(db, '/users/' + this.state.personalEmail + '/Students');
         onValue(starCountRef, (snapshot) => {
             const data = snapshot.val();
+            let tempArray = []
             snapshot.forEach( (childSnapshot) => {
                 const absPath = "/students/" + childSnapshot.key + "/name";
                 const studentPath = ref(db, absPath);
                 onValue(studentPath, (snapshot) => {
-                    const dataStudent = snapshot.val();
+                    let dataStudent = snapshot.val();
                     count = count + 1;
-                    dummyDataStudents.push({key:count,name:dataStudent, idNumber: childSnapshot.key});
-                  });
+                    tempArray.push({key:count,name:dataStudent, idNumber: childSnapshot.key});
+                });
             });
+            this.setState({dummyDataStudents:tempArray});
         });
-        console.log(dummyDataStudents);
     }
 
 
@@ -67,7 +65,7 @@ export default class Students extends React.Component{
                     <SafeAreaView style={{}}>
                         <FlatList   data={this.state.dummyDataStudents }
                                     renderItem={ ({item}) => {return <StudentCard name={item.name} navigation={this.props.navigation} id={item.idNumber}/>}}
-                                    keyExtractor={ (student) => student.key }
+                                    keyExtractor={ (student) => student.key.toString() }
                         />
                     </SafeAreaView>
                 </View>
