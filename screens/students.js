@@ -42,9 +42,9 @@ export default class Students extends React.Component{
                     let dataStudent = snapshot.val();
                     count = count + 1;
                     tempArray.push({key:count,name:dataStudent, idNumber: childSnapshot.key});
+                    this.setState({dummyDataStudents:tempArray});
                 });
             });
-            this.setState({dummyDataStudents:tempArray});
         });
     }
 
