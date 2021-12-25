@@ -1,17 +1,5 @@
 import React from 'react';
 import {View, TouchableOpacity, Text, Image, Pressable} from 'react-native';
-import { getStorage, ref } from "firebase/storage";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
-
-const storageRef = ref(storage, 'some-child');
-const storage = getStorage();
-// Create a reference to 'mountains.jpg'
-const mountainsRef = ref(storage, 'mountains.jpg');
-// Create a reference to 'images/mountains.jpg'
-const mountainImagesRef = ref(storage, 'images/mountains.jpg');
-// While the file names are the same, the references point to different files
-mountainsRef.name === mountainImagesRef.name;           // true
-mountainsRef.fullPath === mountainImagesRef.fullPath;   // false 
 
 
 export default class EditProfile extends React.Component{
@@ -21,11 +9,6 @@ export default class EditProfile extends React.Component{
         };
     }
 
-    Upload = () =>
-        uploadBytes(storageRef, file).then((snapshot) => {
-        console.log('Uploaded a blob or file!');
-      });
-    }
 
     render(){
         return(
