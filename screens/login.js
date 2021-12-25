@@ -26,6 +26,7 @@ export default class Login extends React.Component{
     storeData = async() => {
         try{
             await AsyncStorage.setItem("email",this.state.email.split("@")[0].replace('.','').replace('_',''));
+            await AsyncStorage.setItem("fullEmail",this.state.email);
         }catch(e){ }
     }
 
