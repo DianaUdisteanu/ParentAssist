@@ -17,7 +17,7 @@ export default class StudentCard extends React.Component{
                     <Text  style={{color:'white', fontFamily:'bold-font', fontSize:16}}>{this.props.name}</Text>
                 </View>
                 <View>
-                    <Pressable onPress={()=>this.props.navigation.navigate("ParentDetails", {screenTitle: this.props.name, id: this.props.id})}>
+                    <Pressable onPress={()=>this.props.navigation.navigate("ParentDetails", {screenTitle: this.props.name, id: this.props.id, parent: this.props.parent})}>
                         <Image source={require("../app/images/arrow_right_white.png")} style={{width: 18, height: 18}} resizeMode='contain'/>
                     </Pressable> 
                 </View>                   

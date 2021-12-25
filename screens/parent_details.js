@@ -10,14 +10,16 @@ export default class ParentDetails extends React.Component{
         super();
         this.state = {
             personalEmail: "",
-            DataGrades: []
+            DataGrades: [],
+            parentName: "",
+            parentPhone: ""
         };
     }
 
     async componentDidMount() {
         await this.handleGetEmail();
         this.handleGetGrades();
-        console.log(this.state.DataGrades)
+        this.handleGetParentDetails();
     }
 
     handleGetEmail = async() =>{
@@ -58,11 +60,23 @@ export default class ParentDetails extends React.Component{
         });
     }
 
+    handleGetParentDetails = () => {
+        const db = getDatabase();
+        const starCountRef = ref(db, '/users/' + this.props.route.params.parent + '/Name');
+        onValue(starCountRef, (snapshot)=> {
+            this.setState({parentName: snapshot.val()});
+        })
+        const starCountRef2 = ref(db, '/users/' + this.props.route.params.parent + '/Phone');
+        onValue(starCountRef2, (snapshot)=> {
+            this.setState({parentPhone: snapshot.val()});
+        })
+    }
+
     render(){
         return(
             <View style={{ flex: 1 }}>
                 <View style={{flex: 0.1, flexDirection: "row", justifyContent:'space-between'}}>
-                    <TouchableOpacity onPress={this.handleGetGrades} style={{width: 30, height: 30, marginTop:"12%", marginLeft: "7%"}}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("Students")} style={{width: 30, height: 30, marginTop:"12%", marginLeft: "7%"}}>
                             <Image source={require("../app/images/back_arrow_blue.png")} style={{width: 30, height: 30}} resizeMode='contain'/>
                     </TouchableOpacity>
                     < Text style={{color: "#2d3a56", fontSize:19, fontFamily:'bold-font', fontWeight:'bold', marginTop: "13%", textAlign:'center'}}>
@@ -115,22 +129,18 @@ export default class ParentDetails extends React.Component{
                             </View>
                         </View>
                     </View>
-                    <View style={{flex:0.4, marginTop:"4%"}}>
+                    <View style={{flex:0.4, marginTop:"10%"}}>
                         <Text style={{color: "#96A793", fontSize:18, fontFamily:'bold-font', fontWeight:'bold', marginLeft:"5%", marginBottom:"4%"}}>
                             PARENT DETAILS
                         </Text>
-                        <View style={{backgroundColor:"#96A793",width:"90%", borderRadius:30, marginHorizontal:"5%", height:"75%", justifyContent:'space-around'}}>
+                        <View style={{backgroundColor:"#96A793",width:"90%", borderRadius:30, marginHorizontal:"5%", height:"50%", justifyContent:'space-around'}}>
                                 <View style={{flexDirection:'column', marginHorizontal:"7%"}}>
                                     <Text style={{color: "white", fontSize:14, fontFamily:'bold-font'}}>NAME</Text>
-                                    <Text style={{color: "white", fontSize:14, fontFamily:'normal-font'}}>Sofran Sebastian2</Text>
-                                </View>
-                                <View style={{flexDirection:'column', marginHorizontal:"7%"}}>
-                                    <Text style={{color: "white", fontSize:14, fontFamily:'bold-font'}}>EMAIL</Text>
-                                    <Text style={{color: "white", fontSize:14, fontFamily:'normal-font'}}>sebastiansofran@yahoo.com</Text>
+                                    <Text style={{color: "white", fontSize:14, fontFamily:'normal-font'}}>{this.state.parentName}</Text>
                                 </View>
                                 <View style={{flexDirection:'column', marginHorizontal:"7%"}}>
                                     <Text style={{color: "white", fontSize:14, fontFamily:'bold-font'}}>PHONE</Text>
-                                    <Text style={{color: "white", fontSize:14, fontFamily:'normal-font'}}>0729 580 659</Text>
+                                    <Text style={{color: "white", fontSize:14, fontFamily:'normal-font'}}>{this.state.parentPhone}</Text>
                                 </View>
                         </View>
                     </View>

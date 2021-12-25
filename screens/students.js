@@ -35,13 +35,18 @@ export default class Students extends React.Component{
         onValue(starCountRef, (snapshot) => {
             const data = snapshot.val();
             let tempArray = []
+            let parentUser = ""
             snapshot.forEach( (childSnapshot) => {
+                const pPath = ref(db, '/users/' + this.state.personalEmail + '/Students/' + childSnapshot.key + '/Parent');
+                onValue(pPath, (snapshot) => {
+                    parentUser = snapshot.val();
+                });
                 const absPath = "/students/" + childSnapshot.key + "/name";
                 const studentPath = ref(db, absPath);
                 onValue(studentPath, (snapshot) => {
                     let dataStudent = snapshot.val();
                     count = count + 1;
-                    tempArray.push({key:count,name:dataStudent, idNumber: childSnapshot.key});
+                    tempArray.push({key:count,name:dataStudent, idNumber: childSnapshot.key, parentMail: parentUser});
                     this.setState({dummyDataStudents:tempArray});
                 });
             });
@@ -64,7 +69,7 @@ export default class Students extends React.Component{
                 <View style={{ flex: 0.9, marginTop:"10%" }}>
                     <SafeAreaView style={{}}>
                         <FlatList   data={this.state.dummyDataStudents }
-                                    renderItem={ ({item}) => {return <StudentCard name={item.name} navigation={this.props.navigation} id={item.idNumber}/>}}
+                                    renderItem={ ({item}) => {return <StudentCard name={item.name} navigation={this.props.navigation} id={item.idNumber} parent={item.parentMail}/>}}
                                     keyExtractor={ (student) => student.key.toString() }
                         />
                     </SafeAreaView>
