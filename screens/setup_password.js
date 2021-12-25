@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, TouchableOpacity, Text, Image, Pressable, Alert} from 'react-native';
+import {View, Text, Image, Pressable, Alert} from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { getAuth, updatePassword } from 'firebase/auth';
 
@@ -18,7 +18,6 @@ export default class SetupPassword extends React.Component{
     Update = () => {
         const auth = getAuth();
         const user = auth.currentUser;
-        console.log(user);
         if(this.state.fPassword === this.state.sPassword){
             updatePassword(user, this.state.fPassword).then(() => {
                 Alert.alert("Success",
