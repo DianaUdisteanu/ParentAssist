@@ -3,7 +3,8 @@ import {View, TouchableOpacity, Image, Text, Pressable, Alert} from 'react-nativ
 import { TextInput } from 'react-native-paper';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
-import email from 'react-native-email'
+import email from 'react-native-email';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default class CreateParentAccount extends React.Component{
     constructor(){
@@ -14,7 +15,21 @@ export default class CreateParentAccount extends React.Component{
             email: "",
             phoneNumber: "",
             sIdNumber: "",
+            personalEmail : ""
         };
+    }
+
+    componentDidMount() {
+        this.handleGetEmail();
+    }
+
+    handleGetEmail = async() =>{
+        try{
+            const value = await AsyncStorage.getItem("email");
+            if(value !== null) {
+                this.setState({personalEmail : value});
+            }
+        }catch(e){}
     }
 
     handleName = (text) => {this.setState({name: text})};
@@ -82,6 +97,14 @@ export default class CreateParentAccount extends React.Component{
         }).catch(function (error) {
             console.log("Error:" + error.message);
         });
+
+        const Path = "/" + this.state.personalEmail + "/Students/" + this.state.sIdNumber;
+        const id = this.state.sIdNumber;
+        set(ref(db, '/users' + Path), {
+            Parent : this.state.email.split("@")[0].replace('.','').replace('_','')
+        }).catch(function (error) {
+            console.log("Error:" + error.message);
+        });
     }
 
     render(){
@@ -144,7 +167,7 @@ export default class CreateParentAccount extends React.Component{
                 </View>
                 <View style={{flex:0.20, alignItems:'center', marginTop:"5%"}}>
                         <Pressable style={{backgroundColor: '#96A793', alignItems:'center', width:"55%", marginHorizontal:"25%", height:47, justifyContent:'center', borderRadius:30, marginTop: "2%"}}
-                                onPress={() => {this.CreateAccount(); this.handleSendEmail(this.state.email, 'Your account for ParentAssist app was created!', 'Dear, ' + this.state.name + '\n' + 'Here are the credentials for logging into our app:\n' + 'Email: ' + this.state.email + '\n' + 'Password: ' + this.pass + '\n' + 'Do not forget to change your password after logging in.')}} > 
+                                onPress={() => {this.CreateAccount(); this.handleSendEmail(this.state.email, 'Your account for ParentAssist app was created!', 'Dear, ' + this.state.name + '\n' + 'Here are the credentials for logging into our app:\n' + 'Email: ' + this.state.email + '\n' + 'Password: ' + this.pass + '\n' + 'Do not forget to change your password after logging in.')}}  > 
                             <Text  style={{color:'white', fontFamily:'bold-font', fontSize:16}}>SUBMIT ACCOUNT</Text>
                         </Pressable>
                 </View>

@@ -19,13 +19,13 @@ export default class Login extends React.Component{
     }
 
     componentDidMount(){
-        const db = getDatabase()
+        const db = getDatabase();
     }
 
 
     storeData = async() => {
         try{
-            await AsyncStorage.setItem("email",this.state.email)
+            await AsyncStorage.setItem("email",this.state.email.split("@")[0].replace('.','').replace('_',''));
         }catch(e){ }
     }
 

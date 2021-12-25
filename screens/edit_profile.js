@@ -1,12 +1,14 @@
 import React from 'react';
 import {View, TouchableOpacity, Text, Image, Pressable} from 'react-native';
 
+
 export default class EditProfile extends React.Component{
     constructor(){
         super();
         this.state = {
         };
     }
+
 
     render(){
         return(

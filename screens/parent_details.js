@@ -1,57 +1,75 @@
 import React from 'react';
 import {View, TouchableOpacity, Text, Image, Pressable} from 'react-native';
 import GradesObject from '../components/grades-object';
+import { getDatabase, ref, onValue} from "firebase/database";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const DataGrades = [
-    {
-        key:1,
-        name:"MATHEMATICS",
-        gradeOne:"10 / 29.11.2021",
-        gradeTwo:"8 / 6.12.2021",
-        gradeThree:"4 / 5.5.2021"
-        
-    },
-    {
-        key:2,
-        name:"HISTORY",
-        gradeOne:"10 / 29.11.2021",
-        gradeTwo:"8 / 6.12.2021",
-        gradeThree:"4 / 5.5.2021"
-    },
-    {
-        key:3,
-        name:"GEOGRAPHY",
-        gradeOne:"10 / 29.11.2021",
-        gradeTwo:"8 / 6.12.2021",
-        gradeThree:"4 / 5.5.2021",
-    },{
-        key:4,
-        name:"ART",
-        gradeOne:"10 / 29.11.2021",
-        gradeTwo:"",
-        gradeThree:""
-    },
-    {
-        key:5,
-        name:"BIOLOGY",
-        gradeOne:"10 / 29.11.2021",
-        gradeTwo:"8 / 6.12.2021",
-        gradeThree:""
-    },
-    {
-        key:6,
-        name:"CHEMISTRY",
-        gradeOne:"",
-        gradeTwo:"",
-        gradeThree:""
-    }
-]
 
 export default class ParentDetails extends React.Component{
     constructor(){
         super();
         this.state = {
+            personalEmail: "",
+            DataGrades: [],
+            parentName: "",
+            parentPhone: ""
         };
+    }
+
+    async componentDidMount() {
+        await this.handleGetEmail();
+        this.handleGetGrades();
+        this.handleGetParentDetails();
+    }
+
+    handleGetEmail = async() =>{
+        try{
+            const value = await AsyncStorage.getItem("email");
+            if(value !== null) {
+                this.setState({personalEmail : value});
+            }
+        }catch(e){}
+    }
+
+    handleGetGrades = () =>{
+        let count = 0;
+        const db = getDatabase();
+        const starCountRef = ref(db, '/students/' + this.props.route.params.id + '/grades');
+        onValue(starCountRef, (snapshot) => {
+            const data = snapshot.val();
+            let tempArray = []
+            snapshot.forEach( (childSnapshot) => {
+                const absPath = "/students/" + this.props.route.params.id + '/grades/' + childSnapshot.key;
+                const studentPath = ref(db, absPath);
+                onValue(studentPath, (snapshot) => {
+                    let objGrade = {}
+                    objGrade.name = snapshot.key;
+                    let countGrade = 1;
+                    count = count + 1;
+                    snapshot.forEach( (childSnapshot2) => {
+                        if (countGrade === 1) objGrade.gradeOne = childSnapshot2.val();
+                        else if (countGrade === 2) objGrade.gradeTwo = childSnapshot2.val();
+                        else objGrade.gradeThree = childSnapshot2.val();
+                        countGrade = countGrade + 1;
+                    })
+                    objGrade.key = count;
+                    tempArray.push(objGrade);
+                });
+            });
+            this.setState({DataGrades:tempArray});
+        });
+    }
+
+    handleGetParentDetails = () => {
+        const db = getDatabase();
+        const starCountRef = ref(db, '/users/' + this.props.route.params.parent + '/Name');
+        onValue(starCountRef, (snapshot)=> {
+            this.setState({parentName: snapshot.val()});
+        })
+        const starCountRef2 = ref(db, '/users/' + this.props.route.params.parent + '/Phone');
+        onValue(starCountRef2, (snapshot)=> {
+            this.setState({parentPhone: snapshot.val()});
+        })
     }
 
     render(){
@@ -78,43 +96,51 @@ export default class ParentDetails extends React.Component{
                     <View style={{backgroundColor:"#96A793",width:"90%", borderRadius:30, flexDirection: 'row', alignContent:'center',marginHorizontal:"5%", flex:0.6}}>
                         <View style={{flexDirection: 'column', alignItems:'center', flex: 0.5}}>
                             <View style={{flex: 0.33 , width:"100%"}}>
-                                <GradesObject name={DataGrades[0].name} gradeOne={DataGrades[0].gradeOne} gradeTwo={DataGrades[0].gradeTwo} gradeThree={DataGrades[0].gradeThree} />
-                            </View>
-                            <View style={{flex: 0.33, width:"100%"}}>
-                                <GradesObject name={DataGrades[1].name} gradeOne={DataGrades[1].gradeOne} gradeTwo={DataGrades[1].gradeTwo} gradeThree={DataGrades[1].gradeThree} />
-                            </View>
-                            <View style={{flex: 0.33, width:"100%"}}>
-                                <GradesObject name={DataGrades[2].name} gradeOne={DataGrades[2].gradeOne} gradeTwo={DataGrades[2].gradeTwo} gradeThree={DataGrades[2].gradeThree} />
+                                { this.state.DataGrades.map(  (item) => {
+                                        if( item.key <= 3){ 
+                                            return(
+                                                <GradesObject  name={item.name} 
+                                                                gradeOne={item.gradeOne} 
+                                                                gradeTwo={item.gradeTwo} 
+                                                                gradeThree={item.gradeThree} 
+                                                                key={item.key}
+                                                />
+                                            )
+                                        }
+                                    }
+                                )}
                             </View>
                         </View>
-                        <View style={{flexDirection: 'column', alignItems:'center' , flex: 0.5}}>
-                            <View style={{flex: 0.33, width:"100%"}}>
-                                <GradesObject name={DataGrades[3].name} gradeOne={DataGrades[3].gradeOne} gradeTwo={DataGrades[3].gradeTwo} gradeThree={DataGrades[3].gradeThree} />
+                        <View style={{flexDirection: 'column', alignItems:'center', flex: 0.5}}>
+                            <View style={{flex: 0.33 , width:"100%"}}>
+                                { this.state.DataGrades.map(  (item) => {
+                                        if( item.key > 3){ 
+                                            return(
+                                                <GradesObject  name={item.name} 
+                                                                gradeOne={item.gradeOne} 
+                                                                gradeTwo={item.gradeTwo} 
+                                                                gradeThree={item.gradeThree} 
+                                                                key={item.key}
+                                                />
+                                            )
+                                        }
+                                    }
+                                )}
                             </View>
-                            <View style={{flex: 0.33, width:"100%"}}>
-                                <GradesObject name={DataGrades[4].name} gradeOne={DataGrades[4].gradeOne} gradeTwo={DataGrades[4].gradeTwo} gradeThree={DataGrades[4].gradeThree} />
-                            </View>
-                            <View style={{flex: 0.33, width:"100%"}}>
-                                <GradesObject name={DataGrades[5].name} gradeOne={DataGrades[5].gradeOne} gradeTwo={DataGrades[5].gradeTwo} gradeThree={DataGrades[5].gradeThree} />
-                            </View>    
                         </View>
                     </View>
-                    <View style={{flex:0.4, marginTop:"4%"}}>
+                    <View style={{flex:0.4, marginTop:"10%"}}>
                         <Text style={{color: "#96A793", fontSize:18, fontFamily:'bold-font', fontWeight:'bold', marginLeft:"5%", marginBottom:"4%"}}>
                             PARENT DETAILS
                         </Text>
-                        <View style={{backgroundColor:"#96A793",width:"90%", borderRadius:30, marginHorizontal:"5%", height:"75%", justifyContent:'space-around'}}>
+                        <View style={{backgroundColor:"#96A793",width:"90%", borderRadius:30, marginHorizontal:"5%", height:"50%", justifyContent:'space-around'}}>
                                 <View style={{flexDirection:'column', marginHorizontal:"7%"}}>
                                     <Text style={{color: "white", fontSize:14, fontFamily:'bold-font'}}>NAME</Text>
-                                    <Text style={{color: "white", fontSize:14, fontFamily:'normal-font'}}>Sofran Sebastian2</Text>
-                                </View>
-                                <View style={{flexDirection:'column', marginHorizontal:"7%"}}>
-                                    <Text style={{color: "white", fontSize:14, fontFamily:'bold-font'}}>EMAIL</Text>
-                                    <Text style={{color: "white", fontSize:14, fontFamily:'normal-font'}}>sebastiansofran@yahoo.com</Text>
+                                    <Text style={{color: "white", fontSize:14, fontFamily:'normal-font'}}>{this.state.parentName}</Text>
                                 </View>
                                 <View style={{flexDirection:'column', marginHorizontal:"7%"}}>
                                     <Text style={{color: "white", fontSize:14, fontFamily:'bold-font'}}>PHONE</Text>
-                                    <Text style={{color: "white", fontSize:14, fontFamily:'normal-font'}}>0729 580 659</Text>
+                                    <Text style={{color: "white", fontSize:14, fontFamily:'normal-font'}}>{this.state.parentPhone}</Text>
                                 </View>
                         </View>
                     </View>
