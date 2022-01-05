@@ -41,7 +41,14 @@ export default class Login extends React.Component{
                 if(childSnapshot.key === this.state.email.split("@")[0].replace('.','').replace('_','')) {
                     if(this.state.password.length < 20){
                         if(childSnapshot.val().Role === "Teacher"){
-                            this.props.navigation.navigate("SecondScreen");
+                            this.props.navigation.navigate("SecondScreen",
+                                {
+                                 screen:'Announcement',
+                                 params: {
+                                     imageURI:""
+                                 }   
+                                }
+                            );
                         }else{
                             this.props.navigation.navigate("ThirdScreen");
                         }
