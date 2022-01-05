@@ -51,7 +51,23 @@ export default class Grades extends React.Component{
     constructor(){
         super();
         this.state = {
+            email: "",
+            
         };
+    }
+
+    componentDidMount() {
+        this.handleGetEmail();
+    }
+
+
+    handleGetEmail = async() =>{
+        try{
+            const value = await AsyncStorage.getItem("email");
+            if(value !== null) {
+                this.setState({email : value});
+            }
+        }catch(e){}
     }
 
     render(){
