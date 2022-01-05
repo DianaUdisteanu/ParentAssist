@@ -15,6 +15,8 @@ import Grades from '../screens/grades';
 import ParentDetails from '../screens/parent_details';
 import ParentPosts from '../screens/parent_posts';
 import SetupPassword from '../screens/setup_password';
+import CameraS from '../screens/camera';
+import ConfirmImage from '../screens/confirm_image';
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -132,6 +134,20 @@ function AddIntoStack(){
                 />
                 <Stack.Screen name="SetupPassword"
                               component={SetupPassword}
+                              options={({navigation}) => ({
+                                headerShown: false,
+                                gestureEnabled: false
+                            })}
+                />
+                <Stack.Screen name="CameraS"
+                              component={CameraS}
+                              options={({navigation}) => ({
+                                headerShown: false,
+                                gestureEnabled: false
+                            })}
+                />
+                <Stack.Screen name="ConfirmImage"
+                              component={ConfirmImage}
                               options={({navigation}) => ({
                                 headerShown: false,
                                 gestureEnabled: false
