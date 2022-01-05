@@ -45,7 +45,7 @@ export default class Login extends React.Component{
                                 {
                                  screen:'Announcement',
                                  params: {
-                                     image:{}
+                                     imageURI:""
                                  }   
                                 }
                             );
