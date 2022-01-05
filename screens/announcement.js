@@ -3,7 +3,7 @@ import {View, TouchableOpacity, Image, Text, Pressable, Alert} from 'react-nativ
 import { TextInput } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Camera } from 'expo-camera';
-
+import { ref, onValue, getDatabase, set, push } from "firebase/database";
 
 export default class Announcement extends React.Component{
     constructor(){
@@ -25,6 +25,27 @@ export default class Announcement extends React.Component{
                 this.setState({email : value});
             }
         }catch(e){}
+    }
+
+    handlePostBug() {
+        //create instance for the db
+        const db = getDatabase();
+        const teacherReference = ref(db, 'users/')
+        onValue(teacherReference, (snapshot) => {
+            const data = snapshot.val();
+            snapshot.forEach( (childSnapshot) => {
+                if( this.state.email === childSnapshot.key ){
+                    let announcement = {
+                        title: 'B',
+                        type: 'A',
+                        description:'A',
+                        imageURL:'A'
+                    }
+                    const announcementsReference = ref(db,'users/'+childSnapshot.key+'/'+'announcements/'+announcement.title)
+                    set( announcementsReference, announcement)
+                }
+            })
+        })
     }
 
 
@@ -83,7 +104,7 @@ export default class Announcement extends React.Component{
                             <Text  style={{color:'white', fontFamily:'bold-font', fontSize:17}}>UPLOAD FILE</Text>
                         </Pressable>
                         <Pressable style={{backgroundColor: '#2d3a56', alignItems:'center', width:"50%", marginHorizontal:"25%", height:47, justifyContent:'center', borderRadius:30, marginBottom: "7%"}}
-                                onPress={()=> console.log("post")} > 
+                                onPress={()=> this.handlePostBug()} > 
                             <Text  style={{color:'white', fontFamily:'bold-font', fontSize:21, fontWeight:'bold'}}>POST</Text>
                         </Pressable>
                 </View>
