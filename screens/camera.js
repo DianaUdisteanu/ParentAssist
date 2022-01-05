@@ -30,7 +30,7 @@ export default class CameraS extends React.Component {
                             }}
                             flashMode={this.state.isFlashOn}
                 >
-                    <View style={{position:'absolute', bottom:40, marginHorizontal:"40%", alignItems:'center', justifyContent:'center'}}> 
+                    <View style={{position:'absolute', bottom:41, marginHorizontal:"40%", alignItems:'center', justifyContent:'center'}}> 
                             <IconButton icon="camera"
                                         size={40}
                                         color="white"
