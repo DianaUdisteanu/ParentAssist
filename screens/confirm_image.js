@@ -30,7 +30,16 @@ export default class ConfirmImage extends React.Component {
                                         size={30}
                                         color="white"
                                         style={{backgroundColor:"#262731"}}
-                                        onPress={() => this.props.navigation.navigate('Announcement',{image:this.props.route.params.image})}
+                                        onPress={() =>  
+                                                        this.props.navigation.navigate("SecondScreen",
+                                                        {
+                                                         screen:'Announcement',
+                                                         params: {
+                                                             imageURI: this.props.route.params.image.uri
+                                                         }   
+                                                        }
+                                                    )
+                                        }
                             />
                 </View>
             </View>
