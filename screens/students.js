@@ -48,6 +48,7 @@ export default class Students extends React.Component{
                     count = count + 1;
                     tempArray.push({key:count,name:dataStudent, idNumber: childSnapshot.key, parentMail: parentUser});
                     this.setState({dummyDataStudents:tempArray});
+                    console.log(this.state.dummyDataStudents);
                 });
             });
         });

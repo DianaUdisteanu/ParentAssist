@@ -2,7 +2,7 @@ import React from 'react';
 import {View, TouchableOpacity, Image, Text, Pressable, Alert} from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase, ref, set, onValue } from "firebase/database";
 import email from 'react-native-email';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -93,7 +93,8 @@ export default class CreateParentAccount extends React.Component{
             IDnumber: this.state.sIdNumber,
             Name: this.state.name,
             Phone: this.state.phoneNumber,
-            Role: "Parent"
+            Role: "Parent",
+            Teacher: this.state.personalEmail
         }).catch(function (error) {
             console.log("Error:" + error.message);
         });
@@ -105,6 +106,17 @@ export default class CreateParentAccount extends React.Component{
         }).catch(function (error) {
             console.log("Error:" + error.message);
         });
+
+        // const PathAddParent = '/students/' + this.state.sIdNumber;
+        // const starCountRef = ref(db, PathAddParent);
+        // onValue(starCountRef, (snapshot) => {
+        //     console.log(snapshot.val());
+        // });
+        // set(ref(db, PathAddParent), {
+        //     Parent: username
+        // }).catch(function (error) {
+        //     console.log("Error:" + error.message);
+        // });
     }
 
     render(){

@@ -147,7 +147,7 @@ export default class ParentDetails extends React.Component{
                 </View>
                 <View style={{flex:0.15}}>
                        <Pressable style={{backgroundColor: '#96A793', alignItems:'center', width:"55%", marginHorizontal:"25%", height:47, justifyContent:'center', borderRadius:30, marginTop: "2%"}}
-                                onPress={()=> this.props.navigation.navigate("ParentPosts")} > 
+                                onPress={()=> this.props.navigation.navigate("ParentPosts", {parentAccount: this.props.route.params.parent, parentFullName: this.state.parentName})} > 
                             <Text  style={{color:'white', fontFamily:'bold-font', fontSize:16}}>PARENT POSTS</Text>
                         </Pressable>
                 </View>
