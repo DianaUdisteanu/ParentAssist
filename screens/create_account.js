@@ -58,7 +58,6 @@ export default class CreateParentAccount extends React.Component{
     CreateAccount = () => {
         const auth = getAuth();
         this.pass = this.makeid(20);
-        console.log(this.pass);
         createUserWithEmailAndPassword(auth, this.state.email, this.pass)
         .then(() => {
             this.createIndividualTable();
@@ -98,14 +97,10 @@ export default class CreateParentAccount extends React.Component{
         }).catch(function (error) {
             console.log("Error:" + error.message);
         });
-
-        const Path = "/" + this.state.personalEmail + "/Students/" + this.state.sIdNumber;
-        const id = this.state.sIdNumber;
-        set(ref(db, '/users' + Path), {
-            Parent : this.state.email.split("@")[0].replace('.','').replace('_','')
-        }).catch(function (error) {
-            console.log("Error:" + error.message);
-        });
+        
+        const pathA = '/users/' + this.state.personalEmail + '/Students/' + this.state.sIdNumber + '/Parent';
+        const referinta = ref(db, '/users/' + this.state.personalEmail + '/Students/' + this.state.sIdNumber + '/Parent');
+        set(referinta, this.state.email.split("@")[0].replace('.','').replace('_',''));
     }
 
     render(){
