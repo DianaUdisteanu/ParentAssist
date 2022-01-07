@@ -2,13 +2,32 @@ import React from 'react';
 import { View } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import { Camera } from 'expo-camera';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default class CameraS extends React.Component {
     constructor() {
         super();
         this.camera = null;
-        this.state = {};
+        this.state = {
+            email: ""
+        };
     }
+
+    componentDidMount() {
+        this.handleGetEmail();
+    }
+
+
+    handleGetEmail = async() =>{
+        try{
+            const value = await AsyncStorage.getItem("email");
+            if(value !== null) {
+                this.setState({email : value});
+            }
+        }catch(e){}
+    }
+
 
     snap = async () => {
         let options={

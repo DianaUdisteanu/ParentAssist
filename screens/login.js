@@ -50,7 +50,14 @@ export default class Login extends React.Component{
                                 }
                             );
                         }else{
-                            this.props.navigation.navigate("ThirdScreen");
+                            this.props.navigation.navigate("ThirdScreen",
+                                {
+                                 screen:'ParentReply',
+                                 params: {
+                                     imageURI:""
+                                 }   
+                                }
+                            );
                         }
                     }
                     else{
