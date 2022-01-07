@@ -3,7 +3,7 @@ import {View, TouchableOpacity, Image, Text, Pressable, Alert} from 'react-nativ
 import { TextInput } from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Camera } from 'expo-camera';
-import { onValue, ref as ref_database, getDatabase, set, push } from "firebase/database";
+import { onValue, ref as ref_database, getDatabase, set } from "firebase/database";
 import { getStorage, ref as ref_storage, uploadBytesResumable, getDownloadURL  } from "firebase/storage";
 
 export default class Announcement extends React.Component{

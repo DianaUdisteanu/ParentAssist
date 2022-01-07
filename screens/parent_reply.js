@@ -2,7 +2,7 @@ import React from 'react';
 import {View, TouchableOpacity, Image, Text, Pressable} from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { Camera } from 'expo-camera';
-import { onValue, ref as ref_database, getDatabase, set, push } from "firebase/database";
+import { onValue, ref as ref_database, getDatabase, set } from "firebase/database";
 import { getStorage, ref as ref_storage, uploadBytesResumable, getDownloadURL  } from "firebase/storage";
 
 import AsyncStorage from '@react-native-async-storage/async-storage';

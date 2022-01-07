@@ -6,33 +6,6 @@ import { getDatabase, ref, onValue} from "firebase/database";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-// const DataPosts = [
-//     {
-//         key:1,
-//         title:"TITLE ONE",
-//         imageSRC:"../app/images/adev.png",
-//         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap  into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-//     },
-//     {
-//         key:2,
-//         title:"TITLE TWO",
-//         imageSRC:"../app/images/adev.png",
-//         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-//     },
-//     {
-//         key:3,
-//         title:"TITLE THREE",
-//         imageSRC:"",
-//         description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
-//     },{
-//         key:4,
-//         title:"TITLE FOUR",
-//         imageSRC:"../app/images/adev.png",
-//         description: ""
-//     }
-// ]
-
-
 export default class TeacherPosts extends React.Component{
     constructor(){
         super();
@@ -61,20 +34,16 @@ export default class TeacherPosts extends React.Component{
         const db = getDatabase();
         const starCountRef = ref(db, '/users/' + this.state.email + '/Teacher');
         onValue(starCountRef, (snapshot) => {
-            //console.log(snapshot.val());
             const absPath = "/users/" + snapshot.val() + '/announcements';
             const studentPath = ref(db, absPath);
             onValue(studentPath, (snapshot) => {
-               //console.log(snapshot.val());
                onValue(studentPath, (snapshot) => {
                 let tempArray = []
-                //console.log(snapshot.key);
                     snapshot.forEach( (childSnapshot2) => {
                         let countPost = 1;
                         count = count + 1;
                         const postPath = absPath + "/" + childSnapshot2.key;
                         const postPathDB = ref(db, postPath);
-                        //console.log(childSnapshot2.key);
                         onValue( postPathDB, (snapshot) => {
                             countPost = 1;
                             let objPost = {}
@@ -90,7 +59,6 @@ export default class TeacherPosts extends React.Component{
                         });
                     });
                     this.setState({DataPosts:tempArray});
-                    console.log(this.state.DataPosts);
                 });
             });
         });

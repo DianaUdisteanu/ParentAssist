@@ -106,17 +106,6 @@ export default class CreateParentAccount extends React.Component{
         }).catch(function (error) {
             console.log("Error:" + error.message);
         });
-
-        // const PathAddParent = '/students/' + this.state.sIdNumber;
-        // const starCountRef = ref(db, PathAddParent);
-        // onValue(starCountRef, (snapshot) => {
-        //     console.log(snapshot.val());
-        // });
-        // set(ref(db, PathAddParent), {
-        //     Parent: username
-        // }).catch(function (error) {
-        //     console.log("Error:" + error.message);
-        // });
     }
 
     render(){
