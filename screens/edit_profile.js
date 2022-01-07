@@ -66,6 +66,44 @@ export default class EditProfile extends React.Component{
 
     };
 
+    // handleGrades = () =>{
+    //     const db = getDatabase();
+    //     const referinta = ref_database(db, '/students/TM758416/grades');
+    //     let grades= {
+    //         ART: {
+    //             gradeOne:"9 / 6.04.20211",
+    //             gradeTwo:"",
+    //             gradeThree:""
+    //         },
+    //         HISTORY : {
+    //             gradeOne:"10 / 29.11.2021",
+    //             gradeTwo:"",
+    //             gradeThree:"10 / 23.03.2021"
+    //         },
+    //         GEOGRAPHY : {
+    //             gradeOne:"7 / 07.11.2021",
+    //             gradeTwo:"",
+    //             gradeThree:"9 / 6.04.2021",
+    //         },
+    //         MATHEMATICS : {
+    //             gradeOne:"8 / 6.12.2021",
+    //             gradeTwo:"",
+    //             gradeThree:"4 / 5.5.202"
+    //         },
+    //         CHEMISTRY : {
+    //             gradeOne:"9 / 16.05.2021",
+    //             gradeTwo:"",
+    //             gradeThree:""
+    //         },
+    //         BIOLOGY : {
+    //             gradeOne:"5 / 11.02.2021",
+    //             gradeTwo:"10 / 23.03.2021",
+    //             gradeThree:"9 / 6.04.2021"
+    //         }
+    //     }
+    //     set(referinta, grades);
+    // }
+
     async componentDidMount(){
         await this.handleGetFullEmail();
         await this.handleGetEmail();
@@ -116,9 +154,11 @@ export default class EditProfile extends React.Component{
                     < Text style={{color: "#2d3a56", fontSize:19, fontFamily:'bold-font', fontWeight:'bold', marginTop: "13%", flex: 0.65, textAlign:'left'}}>EDIT PROFILE</Text>
                 </View>
                 <View style={{flex: 0.25, justifyContent: "center", alignItems: 'center'}}>
-                    <Image
-                        source={{uri:this.state.imageSRC}}
-                        style={{width: "75%", height: "75%", borderRadius:1000}} resizeMode='contain'/>
+                    <View style={{zIndex:1, width:150, height:150, alignItems: 'center', justifyContent: 'center', borderRadius: 100, overflow: 'hidden'}}>
+                        <Image
+                            source={{uri:this.state.imageSRC}}
+                            style={{width: "100%", height: "100%", zIndex:99}} resizeMode='center'/>
+                    </View>
                 </View>
                 <View style={{flex: 0.30,flexDirection: "column", justifyContent: "space-around", alignItems: "center",  }}>
                     <View>
