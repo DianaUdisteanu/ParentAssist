@@ -160,7 +160,7 @@ export default class Announcement extends React.Component{
                                         Alert.alert('Access denied!')
                                     }
                                 }} > 
-                            <Text  style={{color:'white', fontFamily:'bold-font', fontSize:17}}>UPLOAD FILE</Text>
+                            <Text  style={{color:'white', fontFamily:'bold-font', fontSize:17}}>UPLOAD PHOTO</Text>
                         </Pressable>
                         <Pressable style={{backgroundColor: '#2d3a56', alignItems:'center', width:"50%", marginHorizontal:"25%", height:47, justifyContent:'center', borderRadius:30, marginBottom: "7%"}}
                                 onPress={async()=> await this.handlePostAnnouncement()} > 
