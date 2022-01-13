@@ -35,20 +35,19 @@ export default class Students extends React.Component{
         onValue(starCountRef, (snapshot) => {
             const data = snapshot.val();
             let tempArray = []
-            let parentUser = ""
             snapshot.forEach( (childSnapshot) => {
-                const pPath = ref(db, '/users/' + this.state.personalEmail + '/Students/' + childSnapshot.key + '/Parent');
-                onValue(pPath, (snapshot) => {
-                    parentUser = snapshot.val();
-                });
-                const absPath = "/students/" + childSnapshot.key + "/name";
-                const studentPath = ref(db, absPath);
-                onValue(studentPath, (snapshot) => {
-                    let dataStudent = snapshot.val();
-                    count = count + 1;
-                    tempArray.push({key:count,name:dataStudent, idNumber: childSnapshot.key, parentMail: parentUser});
-                    this.setState({dummyDataStudents:tempArray});
-                    console.log(this.state.dummyDataStudents);
+                let parentUser = ""
+                let pPath = ref(db, '/users/' + this.state.personalEmail + '/Students/' + childSnapshot.key + '/Parent');
+                onValue(pPath, (snapshotPar) => {
+                    parentUser = snapshotPar.val();
+                    let absPath = "/students/" + childSnapshot.key + "/name";
+                    let studentPath = ref(db, absPath);
+                    onValue(studentPath, (snapshot) => {
+                        let dataStudent = snapshot.val();
+                        count = count + 1;
+                        tempArray.push({key:count,name:dataStudent, idNumber: childSnapshot.key, parentMail: parentUser});
+                        this.setState({dummyDataStudents:tempArray});
+                    });
                 });
             });
         });
